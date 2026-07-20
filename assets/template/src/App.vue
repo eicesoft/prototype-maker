@@ -1,6 +1,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+// Element Plus 按需引入后，中文 locale 不再由 app.use(ElementPlus,{locale}) 设置，
+// 改由 el-config-provider 承接（组件本身会被 unplugin-vue-components 自动注册）
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 const route = useRoute()
 const router = useRouter()
@@ -11,25 +14,27 @@ const modules = computed(() =>
 </script>
 
 <template>
-  <div class="app-shell">
-    <header class="topbar">
-      <router-link to="/" class="brand">原型系统</router-link>
-      <nav class="nav">
-        <router-link
-          v-for="m in modules"
-          :key="m.name"
-          :to="m.path"
-          class="nav-item"
-          :class="{ active: route.name === m.name }"
-        >
-          {{ m.meta?.title }}
-        </router-link>
-      </nav>
-    </header>
-    <main class="content">
-      <router-view />
-    </main>
-  </div>
+  <el-config-provider :locale="zhCn">
+    <div class="app-shell">
+      <header class="topbar">
+        <router-link to="/" class="brand">原型系统</router-link>
+        <nav class="nav">
+          <router-link
+            v-for="m in modules"
+            :key="m.name"
+            :to="m.path"
+            class="nav-item"
+            :class="{ active: route.name === m.name }"
+          >
+            {{ m.meta?.title }}
+          </router-link>
+        </nav>
+      </header>
+      <main class="content">
+        <router-view />
+      </main>
+    </div>
+  </el-config-provider>
 </template>
 
 <style scoped>

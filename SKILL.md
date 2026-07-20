@@ -38,6 +38,11 @@ bash <此skill目录>/scripts/create-project.sh <项目目录名> [父目录]
 - `src/App.vue` — 顶栏导航，自动读取路由表生成切换入口
 - `src/styles/theme.css` — 清新浅色主题（CSS 变量 + Element Plus 主题色覆盖）
 
+**Element Plus 已按需引入**（`vite.config.js` 配了 `unplugin-vue-components` + `ElementPlusResolver`），不要写 `app.use(ElementPlus)` 或全量 `import 'element-plus/dist/index.css'`。约定：
+- 模板里用到的 `el-*` 组件（含 `v-loading` 指令）**自动注册 + 自动引入各自样式**，直接写标签即可，无需 import、无需局部注册。
+- 中文 locale 由 `App.vue` 的 `<el-config-provider :locale="zhCn">` 承接，不要再改回 `app.use` 方式。
+- `ElMessage` / `ElMessageBox` / `ElNotification` 这类 JS API 仍需在用到的地方显式 `import { ElMessage } from 'element-plus'`（其样式已在 `main.js` 统一引入）。
+
 ### 3. 逐个模块写页面
 
 每个模块一个 `src/views/<ModuleName>.vue`，然后在 `src/router/index.js` 注册：
@@ -103,3 +108,9 @@ bash <此skill目录>/scripts/create-project.sh <项目目录名> [父目录]
 - 每次"生成高保真原型"都是**独立新项目**，不要往已有项目里塞。
 - 原型是给产品/业务看的，美观和真实感的优先级高于代码优雅；但也不要写一打开控制台全是 warning 的代码。
 - 如果用户中途改需求（加模块、改风格），直接在当前项目上增量改，不用推倒重来。
+
+## 系统管理类模块补充
+
+当用户要求生成“系统管理 / 后台管理 / 权限管理 / 基础管理”类原型，或需求中包含用户、角色、菜单、部门、字典、日志、定时任务等常见系统管理模块时，在写页面前先读取 `references/admin-system-patterns.md`。该参考文件定义了这些模块的通用结构、字段、交互约定和 Mock 数据规则，确保生成的系统管理类原型既真实又一致。
+
+读取该参考后，按常规流程生成页面：每个模块一个 `src/views/<ModuleName>.vue`，路由注册到 `src/router/index.js`，并保持整体清新浅色风格。只生成用户明确提到的模块，不要画蛇添足添加无关的系统管理页面。
