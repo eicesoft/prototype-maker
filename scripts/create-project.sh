@@ -5,7 +5,13 @@ set -euo pipefail
 
 NAME="${1:?用法: create-project.sh <项目目录名> [父目录]}"
 PARENT="${2:-.}"
-TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../assets/template" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEMPLATE_DIR="$(cd "${SCRIPT_DIR}/../assets/template" && pwd)"
+
+# 脚手架前先确保 Node (v22.23.x) / npm 可用；缺失则自动经 nvm 安装。
+# 被 source 进当前进程，故装好的 node 立刻可用于下面的 npm create / npm install。
+# shellcheck disable=SC1091
+source "${SCRIPT_DIR}/ensure-node.sh"
 
 cd "$PARENT"
 if [ -d "$NAME" ]; then

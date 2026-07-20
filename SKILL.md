@@ -24,13 +24,21 @@ description: 生成高保真产品原型（Vue 3 + Element Plus + vue-router 可
 
 ### 2. 脚手架
 
-运行脚本生成项目骨架（Vite + Vue3 + Element Plus + vue-router 已配好，含清新浅色主题和路由总览首页）：
+运行脚本生成项目骨架（Vite + Vue3 + Element Plus + vue-router 已配好，含清新浅色主题和路由总览首页）。按平台二选一：
 
 ```bash
+# macOS / Linux（bash）
 bash <此skill目录>/scripts/create-project.sh <项目目录名> [父目录]
+```
+```powershell
+# Windows（PowerShell）
+pwsh <此skill目录>/scripts/create-project.ps1 <项目目录名> [父目录]
+# 或在 PowerShell 中直接: ./scripts/create-project.ps1 <项目目录名> [父目录]
 ```
 
 项目目录名用系统名的拼音或英文小写短横线形式，如 `order-admin`。父目录默认为当前工作目录。
+
+两个脚本开头都会先自检 Node 环境：若本机没有 Node 或大版本不是 22，会自动安装 **v22.23.x** 到用户目录（免 sudo / 免管理员权限），并把激活配置写进 shell profile，保证后续新 shell 也能用 `node`/`npm`；已有合用的 Node 则直接复用，不动用户环境。差异只在版本管理器：mac/Linux 用 nvm，Windows 用 fnm。需要 pnpm 时手动跑一次自检脚本加 `--pnpm`（默认流程走 npm）。
 
 脚本完成后项目里有：
 - `src/router/index.js` — 路由表，**所有模块在这里注册**
